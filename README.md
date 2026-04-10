@@ -42,8 +42,6 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
 <img src="https://camo.githubusercontent.com/e70f2a6a8c8f5bf0f4211dd32a0b5311c7464b65098006e654986f6738bfe034/68747470733a2f2f68756767696e67666163652e636f2f64617461736574732f68756767696e67666163652f646f63756d656e746174696f6e2d696d616765732f7261772f6d61696e2f68756767696e67666163655f6875622e737667">
 
-[![Hugging Face Dataset](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-yellow)](https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope)
-
-[leejunho12316/seoul-mayor-hope](https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope)
+Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope
 
 huggingface 데이터셋 README 도 작성
