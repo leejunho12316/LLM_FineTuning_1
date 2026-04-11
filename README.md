@@ -45,3 +45,7 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope
 
 huggingface 데이터셋 README 도 작성
+
+
+## label dataset
+label data 만들기 위해 모델 50개 출력 비교해본 내용 추가
