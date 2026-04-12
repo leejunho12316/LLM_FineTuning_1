@@ -4,7 +4,7 @@
 <img src="https://camo.githubusercontent.com/e70f2a6a8c8f5bf0f4211dd32a0b5311c7464b65098006e654986f6738bfe034/68747470733a2f2f68756767696e67666163652e636f2f64617461736574732f68756767696e67666163652f646f63756d656e746174696f6e2d696d616765732f7261772f6d61696e2f68756767696e67666163655f6875622e737667">
 
 RAW Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope <br>
-Labeled Data Link : 
+Labeled Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope-labeled-backup2500
 
 
 huggingface 데이터셋 README 도 작성
@@ -42,7 +42,7 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
 ## 2. Labeled Data
 
-민원 데이터에 대한 키워드 분류 label을 생성한 Data. 
+민원 데이터에 대한 키워드 분류 label을 생성한 Data. 실제 현장이라면 공무원이 직접 분류했을 카테고리들을 LLM을 사용해 생성.
 
 **System Prompt**<br>
 서울시 조직도를 참고하여 부서 별 맡은 역할을 System Prompt로 작성.<br>
@@ -50,6 +50,9 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
 **with_structured_output** <br>
 BaseModel을 상속받는 사용자 정의 데이터형식 클래스와 with_structured_output을 사용하여 JSON 형식으로 일관된 출력 제한.
+
+**shufle**
+원본 dataset을 shuffle해 특정 기간 데이터에 한정되지 않도록
 
 ```
 SYSTEM_PROMPT = """당신은 서울시 민원 분류 담당관입니다. 지금부터 민원과 민원에 대한 답변을 읽고 키워드를 추출해주세요.
@@ -134,7 +137,7 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
 - 비용과 성능 대비 전달 부서 레이블에 대한 이해가 아쉬움.
 - 비용 제일 비쌈.
 
-4. claude-haiku-4-5-20251001
+4. **claude-haiku-4-5-20251001**
 - 가장 중요한 '전달 부서'의 정답률이 높음
 - 중요도, 민원 유형에 대한 판단률 준수.
 - 가격은 가장 싼 gpt-4o-mini와 claude-sonnet의 중간 정도.
@@ -143,9 +146,9 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
 - 중요도, 전달부서 레이블에 대한 이해도가 떨어짐. 
 - 비용이 저렴하지도 않음.
 
-예산 : 10,000원
--> claude-haiku-4-5-20251001
-약 2000개 label 데이터 제작해 train : test 3 : 1로 사용.
+-> **claude-haiku-4-5-20251001**
+
+예산 10,000원인 관계로 현재는 2500개 label 데이터 제작해 사용.
 
 
 
