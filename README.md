@@ -151,6 +151,124 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
 예산 10,000원인 관계로 현재는 2500개 label 데이터 제작해 사용.
 
 
+# Fine Tuning 과정
 
-# 할 일
-ipynb 파일들 markdown 정리
+system prompt 리스트 shuffle -> 일반화 삭제
+
+# Fine Tuning 성과
+
+모델 : Qwen/Qwen2.5-0.5B-Instruct
+
+### Training Loss
+![training_loss.png](3.Fine_Tuning/training_loss.png)
+trainer_state에 전체 loss 경과 저장 -> 1450번째 checkpoint 사용
+
+### FineTuned & Base Model 출력 비교
+
+Test Dataset 중 민원 데이터 10개 넣고 출력 비교
+
+Base Model 출력
+```
+response:분류 보류
+--------------------------------------------------
+response:분류 보류
+감정적으로 작성한 글. 특정 개인에 대한 근거 없고 맹목적인 비난 글. 비논리적이고 문맥에 일관성이 없는 글. 작성이 온전히 다 되지 않은 글. 등
+--------------------------------------------------
+response:분류 보류
+--------------------------------------------------
+response:분류 보류
+complaint_type: 신고
+emotion: 부정
+--------------------------------------------------
+response:분류 보류
+--------------------------------------------------
+response:분류 보류
+complaint_type: 건의
+emotion: 부정
+--------------------------------------------------
+response:5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+...
+--------------------------------------------------
+response:분류 보류
+부서: 주택실
+--------------------------------------------------
+response:분류 보류
+--------------------------------------------------
+response:importance: 높음
+department: 교통실
+complaint_type: 건의
+emotion: 긍정
+--------------------------------------------------
+```
+
+Fine-Tuned 출력
+
+```
+    response:
+{"importance": "높음", "department": "경제실", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "교통실", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "경제실", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "주택실", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "여성가족실", "complaint_type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "문화본부", "complaint_type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "경제실", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "낮음", "department": "분류 보류", "complaint_Type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "문화본부", "complaint_type": "항의", "emotion": "부정"}
+==================================================
+    response:
+{"importance": "높음", "department": "여성가족실", "complaint_Type": "건의", "emotion": "부정"}
+==================================================
+```
+
+| Base Model | Fine Tuned Model|
+| --- | --- | 
+| - System Prompt의 지시사항 이해 불가. <br>- JSON 형식의 출력 불가능. <br> - 항목에 대한 설명을 같이 출력하거나 4가지 키워드를 전체 출력하지 못함. | - JSON 형식을 지키며 구조화된 출력이 가능.
+
+
+[Fine-tuned-checkpoint1450] 파싱 실패: 0건 <br>
+  importance: 367/505 = 72.7%<br>
+  department: 353/505 = 69.9%<br>
+  complaint_type: 356/505 = 70.5%<br>
+  emotion: 415/505 = 82.2%<br>
+
+[Base] 파싱 실패: 500건<br>
+  importance: 0/0 = 0.0%<br>
+  department: 0/0 = 0.0%<br>
+  complaint_type: 0/0 = 0.0%<br>
+  emotion: 0/0 = 0.0%<br>
+
+Fine-Tuned Model Test 정답표
+
+![accuracy_stacked_plot.png](3.Fine_Tuning/accuracy_stacked_plot.png)
+
+
+
+# 추가
+ full_results_checkpoints.json (checkpoint 별 label 정확도 평가) 시각화
