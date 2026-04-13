@@ -42,17 +42,22 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
 ## 2. Labeled Data
 
-민원 데이터에 대한 키워드 분류 label을 생성한 Data. 실제 현장이라면 공무원이 직접 분류했을 카테고리들을 LLM을 사용해 생성.
+민원을 분석해 LLM이 최종적으로 출력해야 할 label을 생성.
+실제 현장이라면 공무원의 도움을 받아 직접 분류했을 작업을 LLM을 사용해 진행.
 
-**System Prompt**<br>
-서울시 조직도를 참고하여 부서 별 맡은 역할을 System Prompt로 작성.<br>
-서울특별시 조직도 : https://org.seoul.go.kr/mobile/org/orgChart.do
+### System Prompt
+RAGAS Prompt를 응용하여 importance, department, complaint_type, emotion 4가지의 키워드를 도출하도록 System Prompt 작성. 
+
+| # | 키워드 | 설명 |
+|---|--------|------|
+| 1 | `importance` | 민원의 중요도를 구분하는 label. 민원이 빠르게 처리되어 도움을 받아야 하면 높음, 일반적인 의견 전달이라면 보통, 감정적이고 비난을 담은 글이라면 낮음. |
+| 2 | `department` | 해당 민원이 전달되어야 하는 부서를 판별하는 label. 서울시 조직도를 참고하여 부서 별 맡은 역할을 요약해 작성. ([서울특별시 조직도](https://org.seoul.go.kr/mobile/org/orgChart.do)) |
+| 3 | `complaint_type` | 민원의 유형을 구분하는 label. 신고, 문의, 건의, 항의, 칭찬 그리고 그 외로 분류. |
+| 4 | `emotion` | 민원인의 감정상태를 구분하는 label. 긍정, 중립, 부정으로 분류. |
 
 **with_structured_output** <br>
 BaseModel을 상속받는 사용자 정의 데이터형식 클래스와 with_structured_output을 사용하여 JSON 형식으로 일관된 출력 제한.
 
-**shufle**
-원본 dataset을 shuffle해 특정 기간 데이터에 한정되지 않도록
 
 ```
 SYSTEM_PROMPT = """당신은 서울시 민원 분류 담당관입니다. 지금부터 민원과 민원에 대한 답변을 읽고 키워드를 추출해주세요.
@@ -101,16 +106,16 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
 ```
 
 
-**비용 & 정확도**
+### 비용 & 정확도 측정
+
+label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
 비용과 label 정확도를 고려하여 label 하기 위해 비용과 label 정확도를 각각 실험.
 [2.ModelSelection](./2.ModelSelection)에 각 모델별 테스트용 label 생성 데이터, 정답 데이터 있음.
 
-비용 : 50건의 데이터 labeling 후 처리 가격과 특이사항 분석<br>
-정확도 : 수동으로 50건의 민원에 대한 정답 데이터셋 생성 후 정답률 도출.
+<br>
 
-
-
+1. 비용 : 50건의 데이터 labeling 후 처리 가격과 특이사항 분석<br>
 
 | 모델명                      | 50건 처리 가격 (달러) | 특이사항                                       |
   |--------------------------|---------------|--------------------------------------------|
@@ -121,53 +126,52 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
   | claude-haiku-4-5-20251001 | 0.2 (300원)     | 없음                                         |
   | gemini-3-flash-preview  | (354원)         | 처리 5분 넘게 걸림.                               |
 
+<br>
+
+2. 정확도 : 수동으로 50건의 민원에 대한 정답 데이터셋 생성 후 모델 별 키워드 별 정답률 도출.
 <img src="./2.ModelSelection/model_evaluation.png">
 
-평가
-1. gpt-4o-mini
-- 가장 중요한 '전달 부서'의 정답률이 높음. 하지만 중요도에 대한 이해도가 **'굉장히'** 아쉬움
-- 비용 아주 쌈.
 
-2. gpt-4o
-- 레이블에 대한 이해도 준수.
-- 비용 준수.
-- 하지만 TPM (Token Per Minute) 제한에 많이 걸려 굉장히 불편함.
+| 모델 | 중요도 | 전달부서 | 민원유형 | 감정상태 |
+|------|--------|----------|----------|----------|
+| claude-haiku-4-5-20251001 | ➖ 38 | ✅ 42 | ✅ 39 | ➖ 38 |
+| claude-sonnet-4-20250514 | ✅ 39 | ➖ 37 | ✅ 38 | ➖ 38 |
+| claude-sonnet-4-6 | ✅ 40 | ❌ 34 | ➖ 37 | ✅ 42 |
+| gemini-3-flash-preview | ❌ 25 | ❌ 36 | ➖ 37 | ✅ 41 |
+| gpt-4o-mini | ❌ 27 | ➖ 40 | ➖ 37 | ➖ 38 |
+| gpt-4o | ➖ 36 | ✅ 41 | ❌ 34 | ✅ 41 |
+✅ : 준수 (상위 2등) <br>
+➖ : 보통 <br>
+❌ : 아쉬움 (하위 2등) <br>
+-> 가장 중요한 label인 전달부서를 잘 분류하면서 '준수'항목이 2개 이상, 비용 효율적인 **claude-haiku-4-5-20251001**로 결정
 
-3. claude-sonet-4
-- 비용과 성능 대비 전달 부서 레이블에 대한 이해가 아쉬움.
-- 비용 제일 비쌈.
-
-4. **claude-haiku-4-5-20251001**
-- 가장 중요한 '전달 부서'의 정답률이 높음
-- 중요도, 민원 유형에 대한 판단률 준수.
-- 가격은 가장 싼 gpt-4o-mini와 claude-sonnet의 중간 정도.
-
-5. gemini-3-flash-preview
-- 중요도, 전달부서 레이블에 대한 이해도가 떨어짐. 
-- 비용이 저렴하지도 않음.
-
--> **claude-haiku-4-5-20251001**
 
 예산 10,000원인 관계로 현재는 2500개 label 데이터 제작해 사용.
 
+<br><br><br>
 
-# Fine Tuning 과정
+---
+
+<br><br><br>
+
+# Fine Tuning
+
+## 과정
+Runpod 사용 A40, 20분
 
 system prompt 리스트 shuffle -> 일반화 삭제
 
-# Fine Tuning 성과
+## 성과
 
 모델 : Qwen/Qwen2.5-0.5B-Instruct
 
-### Training Loss
-![training_loss.png](3.Fine_Tuning/training_loss.png)
-trainer_state에 전체 loss 경과 저장 -> 1450번째 checkpoint 사용
+
 
 ### FineTuned & Base Model 출력 비교
 
-Test Dataset 중 민원 데이터 10개 넣고 출력 비교
+Fine Tuning 완료된 Model과 Qwen2.5-0.5B-Instruct 모델에 동일한 prompt 10건을 입력해 출력 비교.
 
-Base Model 출력
+1. Base Model 출력
 ```
 response:분류 보류
 --------------------------------------------------
@@ -247,28 +251,30 @@ Fine-Tuned 출력
 ==================================================
 ```
 
-| Base Model | Fine Tuned Model|
-| --- | --- | 
-| - System Prompt의 지시사항 이해 불가. <br>- JSON 형식의 출력 불가능. <br> - 항목에 대한 설명을 같이 출력하거나 4가지 키워드를 전체 출력하지 못함. | - JSON 형식을 지키며 구조화된 출력이 가능.
+| Base Model                                                                                                      | Fine Tuned Model|
+|-----------------------------------------------------------------------------------------------------------------| --- | 
+| - System Prompt의 지시사항 이해 불가. <br> (항목에 대한 설명을 같이 출력, 4가지 키워드 중 일부만 출력, 관련이 없는 출력 등.)<br>- JSON 형식의 출력 불가능. <br> | - JSON 형식을 지키며 구조화된 출력이 가능.
 
 
-[Fine-tuned-checkpoint1450] 파싱 실패: 0건 <br>
-  importance: 367/505 = 72.7%<br>
-  department: 353/505 = 69.9%<br>
-  complaint_type: 356/505 = 70.5%<br>
-  emotion: 415/505 = 82.2%<br>
+### FineTuning Checkpoint - 키워드 정답률 그래프
+Fine funing step 0부터 1500까지 50간격으로 저장된 checkpoint마다 test data를 사용해 키워드 별 정답률 변동을 시각화하였다. 
 
-[Base] 파싱 실패: 500건<br>
-  importance: 0/0 = 0.0%<br>
-  department: 0/0 = 0.0%<br>
-  complaint_type: 0/0 = 0.0%<br>
-  emotion: 0/0 = 0.0%<br>
+![4_Fine_Tuning_Accuracy_by_Checkpoint.png](3.Fine_Tuning/1st_try/4_Fine_Tuning_Accuracy_by_Checkpoint.png)
 
-Fine-Tuned Model Test 정답표
-
-![accuracy_stacked_plot.png](3.Fine_Tuning/accuracy_stacked_plot.png)
+![4_Fine_Tuning_Accuracy_Combined.png](3.Fine_Tuning/1st_try/4_Fine_Tuning_Accuracy_Combined.png)
 
 
+## 결론
 
-# 추가
- full_results_checkpoints.json (checkpoint 별 label 정확도 평가) 시각화
+Department와 Complaint Type에서 가장 높은 정답률을 보이며 Importance와 Emotion 카테고리도 충분히 학습이 진행된 **1150번째 checkpoint**를 최종 모델로 선정한다. 
+
+## 키워드 별 피드백
+department : 프로젝트 기획 단계에서는 민원을 구분할 수 있는 명확한 기준을 세울 수 있다고 생각하고 진행하였다. 하지만 직접 민원을 읽어보고 손수 분류하며 이해를 해 갈 수록 생각이 달라졌다.
+민원 주제의 가장 많은 비율을 차지하는 '교통'과 법적인 자문이 가장 많은 '주택' 분야를 제외한 나머지 분야는 책임 소재를 명확히 할 수 없었다.
+
+importance, complaint_type: 높음, 보통, 낮음 각각의 항목에 대한 좀 더 명확한 기준을 명시해주어 데이터를 생성했어야겠다는 생각이 들었다. 이 분야의 전문가라고 할 수 있는 공무원들의 도움을 받아 레이블링을 직접 하면 공통의 기준이 나오겠지만.<br>
+emotion : LLM의 기본적인 한국어 이해도가 준수해 Fine-Tuning을 진행하지 않은 상황에서도 높은 정확도에서 시작하여 큰 문제가 없었다. <br>
+
+
+# 다음에 할 것
+# 5. VLLM 올려서 실사용 진행해보기.

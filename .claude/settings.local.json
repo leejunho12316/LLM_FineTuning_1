@@ -3,7 +3,8 @@
     "allow": [
       "Bash(python3 -c ':*)",
       "Read(//tmp/**)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(.venv/Scripts/python -c ':*)"
     ]
   }
 }
