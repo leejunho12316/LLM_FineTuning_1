@@ -1,3 +1,11 @@
+# Fine-Tuning LLM
+**개요**
+
+이 프로젝트는 LoRA(Low-Rank Adaptation) 기법으로 모델 레이어에 학습 가능한 Low-Rank 행렬을 삽입해, 적은 파라미터로도 모델의 일반화 능력을 유지하며 Fine-Tuning하는 PEFT (Parameter Efficient Fine Tuning) 프로젝트입니다. Fine-Tuning 된 모델은 HuggingFace에 업로드하여 누구나 사용할 수 있도록 했습니다.
+
+**목적**
+
+Fine-Tuning의 목적은 천만 서울시민의 의견을 접수받는 온라인 민원신청 창구 '서울시 응답소'에 업로드 되는 수 많은 민원 글들을 인력의 개입 없이 그 중요도와 책임 소재가 따르는 부서를 분석해 빠르게 분류하여 민원 처리의 효율성 증대와 시간 단축을 달성하기 위함입니다. 이를 위해 서울시 응답소에 업로드 되어 있는 공개된 민원 글들을 Web Crawling을 통해 수집하고 Fine-Tuning용 데이터세트로 정제하여 훈련에 사용했습니다. 
 
 
 # Dataset
@@ -14,20 +22,18 @@ huggingface 데이터셋 README 도 작성
 **서울시 응답소 - 시장에게 알린다**
 https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
-서울시 응답소 공식 홈페이지에 공개된 민원 데이터를 Web Crawling하여 수집.
+2011년 4분기부터 2026년 4월 중순까지 서울시 응답소 공식 홈페이지에 공개된 민원 데이터를 Web Crawling하여 수집.
 시민이 서울시장에게 직접 민원·건의 사항을 올리면, 서울시가 답변하는 Q&A 형태의 공개 데이터.
 
 <img src="./readme_res/1_eungdapso_screenshot.png">
 
-- 데이터셋 구조
+- 데이터셋 예시
 
-| 컬럼명            | 설명              |
-|----------------|-----------------|
-| `title`        | 민원 제목           |
-| `Date`         | 민원 접수 날짜        |
-| `Question`     | 시민이 작성한 민원 내용   |
-| `Answer`       | 서울시 답변 내용       |
-| `rceptNo_enc`  | 암호화된 민원 고유 접수번호 |
+| 분류  | `title`<br>민원 제목    | `Date`<br>민원 접수 날짜 | `Question`<br>민원 내용                                       | `Answer`<br>답변 내용                                               |`rceptNo_enc`<br>암호화된 민원 고유 접수번호
+|-----|-----------------|--------------------|-----------------------------------------------------------|-----------------------------------------------------------------|-----------------|
+| 1   |서울의 공공디자인은 문화컨텐츠 스토리텔링으로 리모델링을----|2011-12-31| 시장님! 서울의 디자인서울정책은 공공디자인 정책으로 많은 변화를 가져왔습니다. 물론 부정적 이미지... | 000 님 안녕하십니까? 서울시장 박원순입니다. 서울의 공공디자인을 문화컨텐츠 스토리텔링으로 리모델링... | X-cCuvM...
+| 166 | 
+
 
 
 - 데이터셋 정제
@@ -110,12 +116,12 @@ Title과 Question을 보고 민원인의 감정상태를 긍정, 중립, 부정 
 
 label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
-비용과 label 정확도를 고려하여 label 하기 위해 비용과 label 정확도를 각각 실험.
-[2.ModelSelection](./2.ModelSelection)에 각 모델별 테스트용 label 생성 데이터, 정답 데이터 있음.
+일관성 있는 labeling을 위해 비용과 정확도를 각각 실험.<br>
+[2.ModelSelection](./2.ModelSelection)에 각 모델별 테스트 데이터 셋 50건에 대한 label 생성 데이터와 수동으로 제작한 labeling 정답 데이터가 있음.
 
 <br>
 
-1. 비용 : 50건의 데이터 labeling 후 처리 가격과 특이사항 분석<br>
+1. 비용 : 50건의 데이터 처리 후 처리 가격과 특이사항 분석<br>
 
 | 모델명                      | 50건 처리 가격 (달러) | 특이사항                                       |
   |--------------------------|---------------|--------------------------------------------|
@@ -156,12 +162,17 @@ label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
 # Fine Tuning
 
+[4_Fine_Tuning_Code_RUNPOD_ver(A40).ipynb](4_Fine_Tuning_Code_RUNPOD_ver%28A40%29.ipynb)
+
 ## 과정
-Runpod 사용 A40, 20분
 
-system prompt 리스트 shuffle -> 일반화 삭제
-
-모델 : Qwen/Qwen2.5-0.5B-Instruct
+들어가야할 내용
+- Runpod 사용 A40, 20분
+- system prompt 항목 별 리스트 shuffle하여 모델 일반화 방지
+- Base Model : Qwen/Qwen2.5-0.5B-Instruct
+- LoRA, SFTConfig 설정값.
+- collate_fn 정의. 처리 예시 (입력된 텍스트와 출력된 내용)
+- 
 
 ## 성과
 
@@ -262,20 +273,20 @@ Fine funing step 0부터 1500까지 50간격으로 저장된 checkpoint마다 te
 ![4_Fine_Tuning_Accuracy_Combined.png](3.Fine_Tuning/4_Fine_Tuning_Accuracy_Combined.png)
 
 
-## 키워드 별 피드백
+## 핵심 결론
 department : 프로젝트 기획 단계에서는 민원을 구분할 수 있는 명확한 기준을 세울 수 있다고 생각하고 진행하였다. 하지만 직접 민원을 읽어보고 손수 분류하며 이해를 해 갈 수록 생각이 달라졌다.
 민원 주제의 가장 많은 비율을 차지하는 '교통'과 법적인 자문이 가장 많은 '주택' 분야를 제외한 나머지 분야는 책임 소재를 명확히 할 수 없었다.
 
 importance, complaint_type: 높음, 보통, 낮음 각각의 항목에 대한 좀 더 명확한 기준을 명시해주어 데이터를 생성했어야겠다는 생각이 들었다. 이 분야의 전문가라고 할 수 있는 공무원들의 도움을 받아 레이블링을 직접 하면 공통의 기준이 나오겠지만.<br>
 emotion : LLM의 기본적인 한국어 이해도가 준수해 Fine-Tuning을 진행하지 않은 상황에서도 높은 정확도에서 시작하여 큰 문제가 없었다. <br>
 
-## 결론
-
+->
 Department와 Complaint Type에서 가장 높은 정답률을 보이며 Importance와 Emotion 카테고리도 충분히 학습이 진행된 **1150번째 checkpoint**를 최종 모델로 선정한다. 
 
 
 # 다음에 할 것
 - VLLM 올려서 실사용 진행해보기.
+- 모델 HuggingFace 올리기? HuggingFace Spaces에 Gradio UI로 배포하기? 
 # README
 - Fine Tuning 과정 추가
 - system prompt 항목별 설명 (ragas 그렇게 나눈 이유, 부서 설정한 이유)
