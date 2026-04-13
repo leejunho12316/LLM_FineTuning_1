@@ -279,4 +279,3 @@ Department와 Complaint Type에서 가장 높은 정답률을 보이며 Importan
 # README
 - Fine Tuning 과정 추가
 - system prompt 항목별 설명 (ragas 그렇게 나눈 이유, 부서 설정한 이유)
-- 
