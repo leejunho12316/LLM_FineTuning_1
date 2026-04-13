@@ -161,11 +161,9 @@ Runpod 사용 A40, 20분
 
 system prompt 리스트 shuffle -> 일반화 삭제
 
-## 성과
-
 모델 : Qwen/Qwen2.5-0.5B-Instruct
 
-
+## 성과
 
 ### FineTuned & Base Model 출력 비교
 
@@ -259,14 +257,10 @@ Fine-Tuned 출력
 ### FineTuning Checkpoint - 키워드 정답률 그래프
 Fine funing step 0부터 1500까지 50간격으로 저장된 checkpoint마다 test data를 사용해 키워드 별 정답률 변동을 시각화하였다. 
 
-![4_Fine_Tuning_Accuracy_by_Checkpoint.png](3.Fine_Tuning/1st_try/4_Fine_Tuning_Accuracy_by_Checkpoint.png)
+![4_Fine_Tuning_Accuracy_by_Checkpoint.png](3.Fine_Tuning/4_Fine_Tuning_Accuracy_by_Checkpoint.png)
 
-![4_Fine_Tuning_Accuracy_Combined.png](3.Fine_Tuning/1st_try/4_Fine_Tuning_Accuracy_Combined.png)
+![4_Fine_Tuning_Accuracy_Combined.png](3.Fine_Tuning/4_Fine_Tuning_Accuracy_Combined.png)
 
-
-## 결론
-
-Department와 Complaint Type에서 가장 높은 정답률을 보이며 Importance와 Emotion 카테고리도 충분히 학습이 진행된 **1150번째 checkpoint**를 최종 모델로 선정한다. 
 
 ## 키워드 별 피드백
 department : 프로젝트 기획 단계에서는 민원을 구분할 수 있는 명확한 기준을 세울 수 있다고 생각하고 진행하였다. 하지만 직접 민원을 읽어보고 손수 분류하며 이해를 해 갈 수록 생각이 달라졌다.
@@ -275,6 +269,13 @@ department : 프로젝트 기획 단계에서는 민원을 구분할 수 있는 
 importance, complaint_type: 높음, 보통, 낮음 각각의 항목에 대한 좀 더 명확한 기준을 명시해주어 데이터를 생성했어야겠다는 생각이 들었다. 이 분야의 전문가라고 할 수 있는 공무원들의 도움을 받아 레이블링을 직접 하면 공통의 기준이 나오겠지만.<br>
 emotion : LLM의 기본적인 한국어 이해도가 준수해 Fine-Tuning을 진행하지 않은 상황에서도 높은 정확도에서 시작하여 큰 문제가 없었다. <br>
 
+## 결론
+
+Department와 Complaint Type에서 가장 높은 정답률을 보이며 Importance와 Emotion 카테고리도 충분히 학습이 진행된 **1150번째 checkpoint**를 최종 모델로 선정한다. 
+
 
 # 다음에 할 것
-# 5. VLLM 올려서 실사용 진행해보기.
+- VLLM 올려서 실사용 진행해보기.
+# README
+- Fine Tuning 과정 추가
+- system prompt 항목별 설명 (ragas 그렇게 나눈 이유, 부서 설정한 이유)
