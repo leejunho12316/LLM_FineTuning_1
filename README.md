@@ -1,4 +1,25 @@
-# Fine-Tuning LLM
+# Index
+
+- [LLM Fine-Tuning](#llm-fine-tuning)
+- [Dataset](#dataset)
+  - [1. Raw Data](#1-raw-data)
+  - [2. Labeled Data](#2-labeled-data)
+    - [System Prompt](#system-prompt)
+    - [비용 & 정확도 측정](#비용--정확도-측정)
+- [Fine Tuning](#fine-tuning)
+  - [과정](#과정)
+    - [1. Dataset & Model](#1-dataset--model)
+    - [2. 일반화 방지](#2-일반화-방지)
+    - [3. 주요 Configs](#3-주요-configs)
+    - [4. collate_fn](#4-collate_fn)
+  - [성과](#성과)
+    - [FineTuned & Base Model 출력 비교](#finetuned--base-model-출력-비교)
+    - [FineTuning Checkpoint - 키워드 정답률 그래프](#finetuning-checkpoint---키워드-정답률-그래프)
+  - [핵심 결론](#핵심-결론)
+
+---
+
+# LLM Fine-Tuning
 **개요**
 
 이 프로젝트는 LoRA(Low-Rank Adaptation) 기법으로 모델 레이어에 학습 가능한 Low-Rank 행렬을 삽입해, 적은 파라미터로도 모델의 일반화 능력을 유지하며 Fine-Tuning하는 PEFT (Parameter Efficient Fine Tuning) 프로젝트입니다. Fine-Tuning 된 모델은 HuggingFace에 업로드하여 누구나 사용할 수 있도록 했습니다.
@@ -179,7 +200,7 @@ label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
 ## 과정
 
-### 1. Dataset & Model
+### 1. Dataset & Model & Infrastructure
 
 Dataset : [Labeled Data](https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope-labeled-backup2500)를 Train : Test = 4 : 1로 분할하여 사용. (총 2500행)
 
