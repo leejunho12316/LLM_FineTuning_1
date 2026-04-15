@@ -51,8 +51,7 @@ https://eungdapso.seoul.go.kr/req/mayor_hope/mayor_hope.do
 
 ## 2. Labeled Data
 
-민원을 분석해 LLM이 최종적으로 출력해야 할 label을 생성.
-실제 현장이라면 공무원의 도움을 받아 직접 분류했을 작업을 LLM을 사용해 진행.
+민원을 분석해 LLM이 최종적으로 출력해야 할 assistant label 데이터를 생성.
 
 - 데이터셋 예시
 
