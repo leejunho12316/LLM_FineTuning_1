@@ -1,6 +1,7 @@
 # Index
 
 - [LLM Fine-Tuning](#llm-fine-tuning)
+- [Final Model](#final-model)
 - [Dataset](#dataset)
   - [1. Raw Data](#1-raw-data)
   - [2. Labeled Data](#2-labeled-data)
@@ -32,7 +33,7 @@
 
 **개요**
 
-이 프로젝트는 LoRA(Low-Rank Adaptation) 기법으로 모델 레이어에 학습 가능한 Low-Rank 행렬을 삽입해, 적은 파라미터로도 모델의 일반화 능력을 유지하며 Fine-Tuning하는 PEFT (Parameter Efficient Fine Tuning) 프로젝트입니다.
+이 프로젝트는 LoRA(Low-Rank Adaptation) 기법으로 모델 레이어에 학습 가능한 Low-Rank 행렬을 삽입해, 적은 파라미터로도 모델의 일반화 능력을 유지하며 Fine-Tuning하는 PEFT (Parameter Efficient Fine Tuning) 프로젝트입니다. Fine-Tuning 된 모델은 HuggingFace에 업로드하여 누구나 사용할 수 있도록 했습니다.
 
 **목적**
 
@@ -40,14 +41,18 @@ Fine-Tuning의 목적은 천만 서울시민의 의견을 접수받는 온라인
 
 <br><br><br>
 
-# Dataset
+# Final Model
+
 <img src="https://camo.githubusercontent.com/e70f2a6a8c8f5bf0f4211dd32a0b5311c7464b65098006e654986f6738bfe034/68747470733a2f2f68756767696e67666163652e636f2f64617461736574732f68756767696e67666163652f646f63756d656e746174696f6e2d696d616765732f7261772f6d61696e2f68756767696e67666163655f6875622e737667">
+
+Model Link : https://huggingface.co/leejunho12316/qwen2.5-0.5b-finetuned-checkpoint1150
+
+<br>
+
+# Dataset
 
 RAW Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope <br>
 Labeled Data Link : https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope-labeled-backup2500
-
-
-huggingface 데이터셋 README 도 작성
 
 <br>
 
