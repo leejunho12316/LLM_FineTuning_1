@@ -218,7 +218,7 @@ label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
 # Fine Tuning
 
-[4_Fine_Tuning_Code_RUNPOD_ver(A40).ipynb](4_Fine_Tuning_Code_RUNPOD_ver%28A40%29.ipynb)
+[4_Fine_Tuning_Code_RUNPOD.ipynb](4_Fine_Tuning_Code_RUNPOD_Qwen2.5_settings.ipynb)
 
 <br>
 
