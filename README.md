@@ -9,14 +9,14 @@
     - [비용 & 정확도 측정](#비용--정확도-측정)
 - [Fine Tuning](#fine-tuning)
   - [과정](#과정)
-    - [1. Dataset & Model](#1-dataset--model)
+    - [1. Dataset & Model & Infrastructure](#1-dataset--model--infrastructure)
     - [2. 일반화 방지](#2-일반화-방지)
     - [3. 주요 Configs](#3-주요-configs)
     - [4. collate_fn](#4-collate_fn)
   - [결과](#결과)
     - [FineTuned & Base Model 출력 비교](#finetuned--base-model-출력-비교)
     - [FineTuning Checkpoint - 키워드 정답률 그래프](#finetuning-checkpoint---키워드-정답률-그래프)
-  - [핵심 결론](#핵심-결론)
+  - [결론](#결론)
 
 
 <br>
