@@ -1,1 +1,1 @@
-(LLM_FineTuning_1_System Prompt_수정_후_결과 - Google Drive)[https://drive.google.com/drive/folders/1RmdBCgtYumGUKC2ZG-zGPpTCe2gGMdrx]
+[LLM_FineTuning_1_System Prompt_수정_후_결과 - Google Drive](https://drive.google.com/drive/folders/1RmdBCgtYumGUKC2ZG-zGPpTCe2gGMdrx)
