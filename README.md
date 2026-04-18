@@ -228,11 +228,18 @@ label 생성 시 사용할 LLM 선정을 위해 비용과 정확도를 측정.
 
 ### 1. Dataset & Model & Infrastructure
 
-Dataset : [Labeled Data](https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope-labeled-backup2500)를 Train : Test = 4 : 1로 분할하여 사용. (총 2500행)
+**Dataset** : [Labeled Data](https://huggingface.co/datasets/leejunho12316/seoul-mayor-hope-labeled-backup2500)를 Train : Test = 4 : 1로 분할하여 사용. (총 2500행)
 
-Base Model : [Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
+**Base Model**
+- [Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
+- [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct)
+- [Qwen/Qwen2.5-3B-Instruct](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct)
+- [Qwen/Qwen2.5-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct)
 
-Infrastructure : [RunPod](https://www.runpod.io/), NVIDIA A40 (48GM VRAM), 학습 소요 시간 약 25분
+**Infrastructure** : [RunPod](https://www.runpod.io/)
+- NVIDIA A40 (48GB VRAM)
+- NVIDIA A100 SXM (80GB VRAM)
+
 
 <br>
 
@@ -432,8 +439,12 @@ response:{
 
 500건의 Test Data를 활용해 모델 별 Fine-Tuning 전/후 키워드 별 정답률 평가.
 
+모델 크기 별 Fine-Tuning 전/후 키워드 정답률.
 
+![01_model_comparison.png](4.Visualization/01_model_comparison.png)
+![05_keyword_trend_by_model_size.png](4.Visualization/05_keyword_trend_by_model_size.png)
 <br>
+
 
 | 분류 | 구분         | 중요도       | 전달부서      | 민원유형      | 감정상태      |
 |------|------------|-----------|-----------|-----------|-----------|

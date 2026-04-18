@@ -1,3 +1,6 @@
+################개요################
+# 모델 checkpoint 별 키워드 종합 점수 시각화 코드
+
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
