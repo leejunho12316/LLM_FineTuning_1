@@ -462,19 +462,13 @@ response:{
 <br><br><br>
 
 ### FineTuning Checkpoint - 키워드 정답률 그래프
-Fine funing step 0부터 1500까지 50간격으로 저장된 checkpoint마다 test data를 사용해 키워드 별 정답률 변동을 시각화. 
 
-![4_Fine_Tuning_Accuracy_by_Checkpoint.png](3.Fine_Tuning/4_Fine_Tuning_Accuracy_by_Checkpoint.png)
 
-![4_Fine_Tuning_Accuracy_Combined.png](3.Fine_Tuning/4_Fine_Tuning_Accuracy_Combined.png)
+
 
 <br><br><br>
 
 ## 핵심 결론
-Fine-Tuning 전 Qwen2.5-0.5B-Instruct Base Model은 System Prompt 지시사항을 이해하지 못합니다. Base Model의 출력을 보면 항목에 대한 설명을 같이 출력하거나, 4가지 키워드 중 일부만 출력하거나, 아얘 무관한 출력을 하는 등 역할을 제대로 해내지 못하는 모습을 보입니다.
-하지만 Fine-Tuning 후에는 500건의 Test Data 중 JSON 형식을 지키지 않아 Parsing에 실패한 데이터가 없을 정도로 형식을 잘 지키는 모습을 보여줍니다. 또한, 각 키워드마다 Test DataSet 500건에 대하여 최소 75%, 최대 86%의 정답률을 보입니다.
-
-Department와 Complaint Type에서 가장 높은 정답률을 보이는 동시에 Importance와 Emotion 카테고리도 충분히 학습이 진행된 **1150번째 checkpoint**를 최종 모델로 선정하였스빈다.
 
 
 
