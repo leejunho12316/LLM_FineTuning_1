@@ -4,7 +4,8 @@
       "Bash(python3 -c ':*)",
       "Read(//tmp/**)",
       "Bash(python:*)",
-      "Bash(.venv/Scripts/python -c ':*)"
+      "Bash(.venv/Scripts/python -c ':*)",
+      "Bash(python3 *)"
     ]
   }
 }
