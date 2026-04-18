@@ -15,7 +15,9 @@
     - [4. collate_fn](#4-collate_fn)
   - [결과](#결과)
     - [FineTuned & Base Model 출력 비교](#finetuned--base-model-출력-비교)
-    - [FineTuning Checkpoint - 키워드 정답률 그래프](#finetuning-checkpoint---키워드-정답률-그래프)
+  - [평가](#평가)
+    - [FineTuning Checkpoint Visualization - 키워드 정답률 그래프](#finetuning-checkpoint-visualization---키워드-정답률-그래프)
+    - [FineTuning Checkpoint Visualization - Training Loss 그래프](#finetuning-checkpoint-visualization---training-loss-그래프)
   - [결론](#결론)
 
 
@@ -437,7 +439,7 @@ response:{
 
 <br>
 
-### 평가
+## 평가
 
 500건의 Test Data를 활용해 모델 별 Fine-Tuning 전/후 키워드 별 정답률 평가.
 
@@ -463,11 +465,19 @@ response:{
 
 <br><br><br>
 
-### FineTuning Checkpoint - 키워드 정답률 그래프
+
+### FineTuning Checkpoint Visualization - 키워드 정답률 그래프
+
+Qwen2.5-3b Fine-Tuning 학습 과정 checkpoint별 키워드 정답률 그래프
 
 ![07_checkpoint_per_keyword.png](6.Visualization/07_checkpoint_per_keyword.png)
 ![08_checkpoint_combined.png](6.Visualization/08_checkpoint_combined.png)
 
+### FineTuning Checkpoint Visualization - Training Loss 그래프
+
+Qwen2.5-3b Fine-Tuning Training Loss 그래프
+
+![06_training_loss_qwen2.5-3b.png](6.Visualization/06_training_loss_qwen2.5-3b.png)
 <br><br><br>
 
 ## 결론
