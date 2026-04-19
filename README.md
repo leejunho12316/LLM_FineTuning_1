@@ -7,6 +7,7 @@
   - [2. Labeled Data](#2-labeled-data)
     - [System Prompt](#system-prompt)
     - [모델 별 labeling 정확도 측정](#모델-별-labeling-정확도-측정)
+    - [labeling 데이터 검증](#labeling-데이터-검증)
 - [Fine Tuning](#fine-tuning)
   - [과정](#과정)
     - [1. Dataset & Model & Infrastructure](#1-dataset--model--infrastructure)
