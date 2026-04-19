@@ -412,21 +412,7 @@ response:{
 
 
 
-<br><br><br>
 
-
-### FineTuning Checkpoint Visualization - 키워드 정답률 그래프
-
-Qwen2.5-3b Fine-Tuning 학습 과정 checkpoint별 키워드 정답률 그래프
-
-![07_checkpoint_per_keyword.png](6.Visualization/07_checkpoint_per_keyword.png)
-![08_checkpoint_combined.png](6.Visualization/08_checkpoint_combined.png)
-
-### FineTuning Checkpoint Visualization - Training Loss 그래프
-
-Qwen2.5-3b Fine-Tuning Training Loss 그래프
-
-![06_training_loss_qwen2.5-3b.png](6.Visualization/06_training_loss_qwen2.5-3b.png)
 <br><br><br>
 
 ## 결론
@@ -436,9 +422,11 @@ Qwen2.5-3b Fine-Tuning Training Loss 그래프
  기본적으로 모델의 파라미터 수가 커질수록 전체적인 성능이 증가하는 것을 볼 수 있다. 0.5B의 평균 정답률은 76.3%, 1.5B는 82.4%, 3B는 84.3%, 7B는 85.0%이다.
 성능 증가폭은 0.5B, 1.5B, 3B에서 각각 5.9%, 1.9%로 유의미한 차이가 있지만 3B, 7B 사이는 0.7%로 모델 파라미터 크기 증가에 비해 완만한 것을 볼 수 있다. 따라서 처리 비용을 고려했을 때 가장 합리적인 3B모델로 최종 모델을 선정하였다.
 
+![07_checkpoint_per_keyword.png](6.Visualization/07_checkpoint_per_keyword.png)
+![08_checkpoint_combined.png](6.Visualization/08_checkpoint_combined.png)
 
-또한, 키워드 정답률 그래프를 checkpoint step 1150~1300대에서 좋은 정확도를 보여준다.
-그 중에서도 Fine-Tuning 목적에 가장 중요한 '전달부서' 키워드인 전달부서를 중심으로 판단했고 중요도, 민원유형, 감정상태 정확도 또한 82.8%, 83.0%, 87.1%로 준수한 1300번째 checkpoint를 선정했다.
+또한, Qwen2.5-3B 모델의 모든 Fine-Tuning Checkpoint별 키워드 정답률 그래프를 보면, checkpoint step 1150~1300대에서 좋은 정확도를 보여주는 것을 알 수 있다.
+그 중에서도 Fine-Tuning 목적에 가장 중요한 키워드인 전달부서를 중심으로 중요도, 민원유형, 감정상태 정확도 또한 82.8%, 83.0%, 87.1%로 준수한 1300번째 checkpoint를 최종 모델로 선정했다.
 
 ---
 
